@@ -1,7 +1,6 @@
 const Express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const publishMsg = require('./service_check.js')
 
 const app = new Express();
 
