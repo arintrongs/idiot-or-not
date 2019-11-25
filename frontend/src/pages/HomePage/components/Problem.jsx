@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Select, Button, Input } from 'antd';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -19,7 +20,7 @@ class PriceInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data : [1,2,3,4,5],
+      data : this.props.num,
       op : ['+','+','+','+','+','+','+','+','+','+'],
       user: '',
     };
@@ -63,9 +64,12 @@ class PriceInput extends React.Component {
 
     return <div style={{display:'flex','flexDirection':'row'}}>
       {data.map((val,idx)=>{
+      if(idx+1 == data.length) {
+        return null;
+      }
       return(
         <div style={{display:'flex',flex:1}}>  
-        <div style={{ width: '40%', display: 'inline-block', textAlign: 'center' }}> 3 </div>
+        <div style={{ width: '40%', display: 'inline-block', textAlign: 'center' }}> {val} </div>
         <Select
         value={op[idx]}
         size={size}
@@ -80,9 +84,9 @@ class PriceInput extends React.Component {
       </Select> </div>
       ) 
     })}
-    <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> 3 </div>
+    <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> {data[data.length-1]} </div>
     <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> = </div>
-    <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> 3 </div>
+    <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> {this.props.ans} </div>
     <div style={{ width: '15%', display: 'inline-block', textAlign: 'center' }}>
         <div style={{ width: '30%', display: 'inline-block'}}>user: </div>
        <Input style={{ width: '70%'}} value={user} onChange={(e)=>this.handleUser(e)} />
@@ -102,10 +106,21 @@ class Demo extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values.Calculator.op, values.Calculator.user);
-        this.setState({response: 'success'})
+        const result = await axios.post('/submit', {
+          uid: values.Calculator.user,
+          num: values.Calculator.data,
+          op: values.Calculator.op,
+        })
+        if (result.result === true)
+        {
+          this.setState({response: 'success'})
+        } else if (result.result === false) {
+          this.setState({response: 'fail'})
+        } else {
+          this.setState({response: ''})
+        }
       }
     });
   };
@@ -131,7 +146,7 @@ class Demo extends React.Component {
           <Form.Item label="Calculator" style={{width: '80%', fontSize: '20px'}}>
             {getFieldDecorator('Calculator', {
               initialValue: { op: ['+','+','+','+','+','+','+','+','+','+'], user: '' },
-            })(<PriceInput />)}
+            })(<PriceInput num={this.props.num} ans={this.props.ans} />)}
           </Form.Item>
           <Form.Item style={{width: '100px'}}>
             <Button type="primary" htmlType="submit">

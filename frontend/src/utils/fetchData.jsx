@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useFetch = () => {
+const useFetch = (path) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   async function fetchUrl() {
-    const response = await axios.get('https://panjs.com/ywc.json');
+    const response = await axios.get(process.env.URL+path);
     setData(response.data);
     setLoading(false);
   }

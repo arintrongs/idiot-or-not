@@ -6,13 +6,19 @@ import Leaderboard from './components/Leaderboard'
 import './HomePage.scss'
 
 const HomePage = () => {
-	const [data, loading] = useFetch();
-	const { navbarItems, duration, detail, condition } = data
+	const [dataLeaderboard, loadingLeaderboard] = useFetch('/leaderboard');
+	const [dataQuestion, loadingQuestion] = useFetch('/question');
+	// const { num, ans } = dataQuestion
+	// const { data } = dataLeaderboard
+
+	const num = dataQuestion.num || [4, 5, 9, 1];
+	const ans = dataQuestion.ans || 7;
+	const data = dataLeaderboard.data || [{uid: 'eqsk134', score: 100}, {uid: 'pong', score: -2100}]
 
 	return (
 		<div>
-			<Problem />
-			<Leaderboard />
+			<Problem num={num} ans={ans}/>
+			<Leaderboard data={data}/>
 		</div>  
 	);
 }
