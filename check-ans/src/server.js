@@ -52,7 +52,7 @@ app.post('/', async (req,res)=>
   {
         try{
             const ans = getAns(req.body.num,req.body.op)
-            const result = false
+            let result = false
             if (ans === req.body.ans){
                 result = true
             }
