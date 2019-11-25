@@ -1,0 +1,46 @@
+body {
+  font-size: 16px;
+  color: #333333;
+  line-height: 1.8;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.ant-row, .row {
+  margin-right: -15px;
+  margin-left: -15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.ant-col {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.no-gutters {
+  margin: 0px;
+  .ant-col {
+    padding: 0px;
+  }
+}
+.text-right {
+  text-align: right!important;
+}
+.text-center {
+  text-align: center!important;
+}
+.text-left {
+  text-align: left!important;
+}
+
+span.nowrap {
+  white-space: nowrap;
+}
+
+.ml-1 {
+  margin-left: .25rem!important;
+}
+
+.ant-row:after, .ant-row:before {
+  display: grid;
+}

@@ -1,0 +1,87 @@
+footer {
+  font-size: 14px;
+  .footer-1 {
+    background-color: #FAFAFA;
+    padding: 30px;
+    @media (max-width: 577px) {
+      padding: 44px 30px;
+    }
+    .head {
+      font-weight: bold;
+      color: #E6332A;
+      margin-top: 24px;
+      font-size: 16px;
+      @media (max-width: 577px) {
+        margin: 15px 0px 10px 0px ;
+      }
+    }
+    .logo {
+      width: 108px;
+      @media (max-width: 577px) {
+        width: 145px;
+      }
+    }
+    a {
+      text-decoration: none;
+      color: #333333;
+    }
+  }
+  .footer-2 {
+    font-family: 'TATSanaSuksaBold';
+    background-color: #213A8F;
+    color: #fff;
+    @media (max-width: 577px) {
+      padding: 15px 0px;
+    }
+    .container {
+      @media (max-width: 769px) {
+        max-width: 100%;
+      }
+    }
+    .copyright {
+      padding: 0.5rem 1rem;
+      padding-left: 0px;
+      @media (max-width: 769px) {
+        padding: 0.5rem 0.5rem;
+        font-size: 12px;
+      }
+      @media (max-width: 577px) {
+        padding: 0.5rem 2rem;
+      }
+    }
+    .nav {
+      float: right;
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0;
+      padding-right: 15px;
+      margin-bottom: 0;
+      list-style: none;
+      .nav-link {
+        display: block;
+        padding: .5rem 1rem;
+        @media (max-width: 769px) {
+          padding: 0.5rem 0.5rem;
+          font-size: 12px;
+        }
+        @media (max-width: 577px) {
+          padding: 0.5rem 2rem;
+        }
+      }
+    }
+    a {
+      font-size: 14px;
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+}
+
+.ant-col .no-pad .ant-col {
+  padding-right: 30px;
+}
+
+div .no-pad{
+  margin-left: 0px;
+  margin-right: 0px;
+}
