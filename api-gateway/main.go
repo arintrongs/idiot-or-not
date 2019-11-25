@@ -1,7 +1,9 @@
 package main
 
 import (
+		"fmt"
 		"log"
+		"os"
 		"encoding/json"
 		"net/http"
 )
@@ -12,7 +14,7 @@ type Submit struct {
 }
 
 func leaderboard(w http.ResponseWriter, req *http.Request) {
-		resp, err := http.Get("http://leaderboard/")
+		resp, err := http.Get(os.Getenv("LEADERBOARD_URL"))
 
 		js, err := json.Marshal(resp)
 		if err != nil {
@@ -25,7 +27,7 @@ func leaderboard(w http.ResponseWriter, req *http.Request) {
 }
 
 func question(w http.ResponseWriter, req *http.Request) {
-	resp, err := http.Get("http://question/")
+	resp, err := http.Get(os.Getenv("QUESTION_URL"))
 
 	js, err := json.Marshal(resp)
 	if err != nil {
@@ -42,16 +44,21 @@ func submit(w http.ResponseWriter, req *http.Request) {
 		decoder := json.NewDecoder(req.Body)
 		var s Submit
 		decoder.Decode(&s)
-		// resp, err := http.Post("http://check", "application/json", )
+		
 
 		json, err := json.Marshal(s)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		http.Post(os.Getenv("SUBMIT_URL"), "application/json", req.Body)
 
 		w.Header().Set("Content-Type", "application/json")	
 		w.Write(json)
+}
+
+func test(w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintf(w, "Hii!!!!!!!")
 }
 
 func failOnError(err error, msg string) {
@@ -64,6 +71,7 @@ func main() {
 		http.HandleFunc("/leaderboard", leaderboard)
 		http.HandleFunc("/question", question)
     http.HandleFunc("/submit", submit)
+		http.HandleFunc("/test", test)
 
 		http.ListenAndServe(":8090", nil)
 		
