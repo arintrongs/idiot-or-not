@@ -45,7 +45,6 @@ const genRand = () => {
 
     }
     return {
-        uid : 'eye',
         num : num,
         ans : ans
     }
