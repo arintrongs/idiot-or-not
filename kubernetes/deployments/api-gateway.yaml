@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+  namespace: idiot-or-not
+  labels:
+    app: api-gateway
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: api-gateway
+          image: enigmaxz/api-gateway
+          ports:
+            - containerPort: 80
