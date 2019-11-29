@@ -5,6 +5,7 @@ metadata:
   namespace: idiot-or-not
 spec:
   type: NodePort
+  clusterIP: 10.100.0.100
   selector:
     app: api-gateway
   ports:
