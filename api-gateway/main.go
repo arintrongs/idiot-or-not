@@ -89,6 +89,6 @@ func main() {
 	http.HandleFunc("/submit", submit)
 	http.HandleFunc("/test", test)
 
-	http.ListenAndServe(":8090", nil)
+	http.ListenAndServe(":80", nil)
 
 }
