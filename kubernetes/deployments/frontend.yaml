@@ -1,22 +1,22 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: foofoo
+  name: frontend
   namespace: idiot-or-not
   labels:
-    app: foofoo
+    app: frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: foofoo
+      app: frontend
   template:
     metadata:
       labels:
-        app: foofoo
+        app: frontend
     spec:
       containers:
-        - name: foofoo
+        - name: frontend
           image: alxegore/foofoo
           imagePullPolicy: Always
           ports:
