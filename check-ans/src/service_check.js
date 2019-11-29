@@ -1,7 +1,7 @@
 const amqp = require('amqplib/callback_api');
 
 const url =
- process.env.url ||
+ process.env.URL ||
  'amqp://mnyqoqiy:HtoGI0IGi-EoLMc6YH9m4zN1d4o7remQ@cougar.rmq.cloudamqp.com/mnyqoqiy';
 
  const publishMsg = (msg) => {amqp.connect(url, function(error, connection) {
