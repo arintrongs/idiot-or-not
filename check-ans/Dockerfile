@@ -10,3 +10,10 @@ CMD ["npm", "start"]
 # docker build -t gen-question .
 # docker run -p 8000:8000 gen-question 
 # docker push eyeayeeye/check-ans
+
+# build on arm
+# vim ~/.config.json
+# "experimental" : "enabled"
+# docker buildx create --name myfuckingbuilder
+# docker buildx use myfuckingbuilder
+# docker buildx build --platform linux/arm64,linux/arm/v7 -t <<your fucking image name>> --push .
