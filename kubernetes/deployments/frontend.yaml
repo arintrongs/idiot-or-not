@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: alxegore/foofoo
+          image: alxegore/frontend
           imagePullPolicy: Always
           ports:
-            - containerPort: 5000
+            - containerPort: 80
       restartPolicy: Always

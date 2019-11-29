@@ -5,12 +5,10 @@ metadata:
   namespace: idiot-or-not
 
 spec:
-  type: NodePort
   ports:
-    - port: 8000
-      targetPort: 8000
+    - port: 80
+      targetPort: 80
       protocol: TCP
-      nodePort: 31002
   selector:
     app: check-ans
 

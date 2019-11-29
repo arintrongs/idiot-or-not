@@ -14,4 +14,4 @@ WORKDIR /usr/src/app
 RUN npm install -g serve
 
 # start app
-CMD ["serve", "build"]
+CMD ["serve","-l","80", "build"]
