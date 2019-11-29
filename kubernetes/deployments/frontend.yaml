@@ -20,5 +20,5 @@ spec:
           image: alxegore/frontend
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 5000
       restartPolicy: Always
