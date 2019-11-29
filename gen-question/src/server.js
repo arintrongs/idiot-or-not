@@ -97,7 +97,7 @@ app.get('/', async(req,res)=>{
     }
 })
 
-const PORT = 8000;
+const PORT = 80;
 
 app.listen(PORT, error => {
  if (!error) {
