@@ -17,4 +17,4 @@ spec:
       - name: check-ans
         image: eyeayeeye/check-ans
         ports:
-        - containerPort: 8000
+        - containerPort: 80
