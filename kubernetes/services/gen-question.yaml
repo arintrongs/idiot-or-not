@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: gen-question
+  namespace: idiot-or-not
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      nodePort: 31001
+  selector:
+    app: gen-question
