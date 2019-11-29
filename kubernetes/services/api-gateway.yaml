@@ -4,6 +4,7 @@ metadata:
   name: api-gateway-service
   namespace: idiot-or-not
 spec:
+  type: NodePort
   selector:
     app: api-gateway
   ports:
