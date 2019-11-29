@@ -4,11 +4,9 @@ metadata:
   name: frontend
   namespace: idiot-or-not
 spec:
-  type: NodePort
   ports:
     - port: 80
       targetPort: 80
       protocol: TCP
-      nodePort: 31112
   selector:
     app: frontend
