@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -17,7 +18,10 @@ func leaderboard(w http.ResponseWriter, req *http.Request) {
 
 	resp, err := http.Get("http://leaderboard/")
 
-	js, err := json.Marshal(resp)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	js, err := json.Marshal(string(body))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -31,8 +35,10 @@ func question(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
 
 	resp, err := http.Get("http://gen-question/")
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	js, err := json.Marshal(string(body))
 
-	js, err := json.Marshal(resp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -83,6 +89,6 @@ func main() {
 	http.HandleFunc("/submit", submit)
 	http.HandleFunc("/test", test)
 
-	http.ListenAndServe(":80", nil)
+	http.ListenAndServe(":8090", nil)
 
 }
