@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gen-question
+  namespace: idiot-or-not
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gen-question
+  template:
+    metadata:
+      labels:
+        app: gen-question
+    spec:
+      containers:
+      - name: gen-question
+        image: eyeayeeye/gen-question
+        ports:
+        - containerPort: 8000

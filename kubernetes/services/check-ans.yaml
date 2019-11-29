@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: check-ans
+  namespace: idiot-or-not
+
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      nodePort: 31002
+  selector:
+    app: check-ans
+
+
+# kubectl apply -f check-ans.yaml (deployment)
+# kubectl apply -f check-ans.yaml (service)
+# minikube service check-ans --url 
+
+# kubectl get deployments
+# kubectl get services
+# kubectl get pods
+

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: check-ans
+  namespace: idiot-or-not
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: check-ans
+  template:
+    metadata:
+      labels:
+        app: check-ans
+    spec:
+      containers:
+      - name: check-ans
+        image: eyeayeeye/check-ans
+        ports:
+        - containerPort: 8000
