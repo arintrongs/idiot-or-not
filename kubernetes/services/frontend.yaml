@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: foofoo
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
+      nodePort: 31000
+  selector:
+    app: foofoo
