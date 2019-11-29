@@ -1,0 +1,70 @@
+scp ca.pem kubernetes.pem kubernetes-key.pem osboxes@10.10.40.90:~
+
+scp ca.pem kubernetes.pem kubernetes-key.pem osboxes@192.168.0.108:~
+scp ca.pem kubernetes.pem kubernetes-key.pem osboxes@192.168.0.113:~
+
+scp ca.pem kubernetes.pem kubernetes-key.pem pi@192.168.0.3:~
+scp ca.pem kubernetes.pem kubernetes-key.pem pi@192.168.0.4:~
+scp ca.pem kubernetes.pem kubernetes-key.pem pi@192.168.0.5:~
+scp ca.pem kubernetes.pem kubernetes-key.pem pi@192.168.0.6:~
+
+
+cfssl gencert \
+-ca=ca.pem \
+-ca-key=ca-key.pem \
+-config=ca-config.json \
+-hostname=192.168.0.107,192.168.0.108,192.168.0.113,127.0.0.1,kubernetes.default \
+-profile=kubernetes kubernetes-csr.json | \
+cfssljson -bare kubernetes
+
+[Unit]
+Description=etcd
+Documentation=https://github.com/coreos
+
+
+[Service]
+ExecStart=/usr/local/bin/etcd \
+  --name 192.168.0.108 \
+  --cert-file=/etc/etcd/kubernetes.pem \
+  --key-file=/etc/etcd/kubernetes-key.pem \
+  --peer-cert-file=/etc/etcd/kubernetes.pem \
+  --peer-key-file=/etc/etcd/kubernetes-key.pem \
+  --trusted-ca-file=/etc/etcd/ca.pem \
+  --peer-trusted-ca-file=/etc/etcd/ca.pem \
+  --peer-client-cert-auth \
+  --client-cert-auth \
+  --initial-advertise-peer-urls https://192.168.0.108:2380 \
+  --listen-peer-urls https://192.168.0.108:2380 \
+  --listen-client-urls https://192.168.0.108:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls https://192.168.0.108:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+  --initial-cluster 192.168.0.108=https://192.168.0.108:2380,192.168.0.107=https://192.168.0.107:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var/lib/etcd
+Restart=on-failure
+RestartSec=5
+
+
+
+[Install]
+WantedBy=multi-user.target
+
+
+apiVersion: kubeadm.k8s.io/v1alpha3
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServerCertSANs:
+- 192.168.0.113
+controlPlaneEndpoint: "192.168.0.113:6443"
+etcd:
+  external:
+    endpoints:
+    - https://192.168.0.107:2379
+    - https://192.168.0.108:2379
+    caFile: /etc/etcd/ca.pem
+    certFile: /etc/etcd/kubernetes.pem
+    keyFile: /etc/etcd/kubernetes-key.pem
+networking:
+  podSubnet: 192.168.0.0/24
+apiServerExtraArgs:
+  apiserver-count: "3"

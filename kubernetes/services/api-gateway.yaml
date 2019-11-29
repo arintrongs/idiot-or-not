@@ -8,5 +8,6 @@ spec:
     app: api-gateway
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080
+      port: 8090
+      targetPort: 8090
+      nodePort: 31113
