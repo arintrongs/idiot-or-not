@@ -108,7 +108,7 @@ class Demo extends React.Component {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        const result = await axios.post('/submit', {
+        const result = await axios.post(process.env.URL+'submit', {
           uid: values.Calculator.user,
           num: values.Calculator.data,
           op: values.Calculator.op,
