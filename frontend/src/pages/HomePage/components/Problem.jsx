@@ -23,7 +23,16 @@ class PriceInput extends React.Component {
       data : this.props.num,
       op : ['+','+','+','+','+','+','+','+','+','+'],
       user: '',
+      ans: this.props.ans,
     };
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.num !== this.props.num) {
+      this.setState({data : this.props.num});
+    }
+    if (prevProps.ans !== this.props.ans) {
+      this.setState({ans: this.props.ans});
+    }
   }
 
   handleUser = user => {
@@ -61,6 +70,7 @@ class PriceInput extends React.Component {
   render() {
     const { size } = this.props;
     const { data, op, user } = this.state;
+    console.log('From Form', this.props.num, this.props.ans);
 
     return <div style={{display:'flex','flexDirection':'row'}}>
       {data.map((val,idx)=>{
@@ -108,12 +118,14 @@ class Demo extends React.Component {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        const result = await axios.post('http://192.160.0.113:5000/submit', {
+        const result = await axios.post('http://192.168.0.113:5000/submit', {
           uid: values.Calculator.user,
           num: values.Calculator.data,
           op: values.Calculator.op,
+          ans: values.Calculator.ans,
         })
-        if (result.data.result === true)
+        const res = JSON.parse(result.data);
+        if (res.result === true)
         {
           this.setState({response: 'success'})
         } else if (result.result === false) {
@@ -140,6 +152,7 @@ class Demo extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log('From Problem', this.props.num, this.props.ans);
     return (
       <React.Fragment>
         <Form layout="inline" onSubmit={this.handleSubmit}>

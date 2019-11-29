@@ -6,7 +6,8 @@ const useFetch = (path) => {
   const [loading, setLoading] = useState(true);
   async function fetchUrl() {
     const response = await axios.get(path);
-    setData(response.data);
+    console.log(response)
+    setData(JSON.parse(response.data));
     setLoading(false);
   }
   useEffect(() => {
