@@ -15,7 +15,7 @@ spec:
         spec:
             containers:
                 - name: leaderboard
-                  image: patipong1998/idiot-or-not-leaderboard:v1.0
+                  image: patipong1998/idiot-or-not-leaderboard
                   imagePullPolicy: Always
                   ports:
                       - containerPort: 80
