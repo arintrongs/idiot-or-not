@@ -2,6 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: foofoo
+  namespace: idiot-or-not
   labels:
     app: foofoo
 spec:

@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: foofoo
+  namespace: idiot-or-not
 spec:
   type: NodePort
   ports:
