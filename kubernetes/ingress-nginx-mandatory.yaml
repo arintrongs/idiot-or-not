@@ -210,7 +210,7 @@ spec:
     spec:
       # wait up to five minutes for the drain of connections
       nodeSelector:
-        kubernetes.io/arch: amd64
+        beta.kubernetes.io/arch: amd64
       terminationGracePeriodSeconds: 300
       serviceAccountName: nginx-ingress-serviceaccount
       nodeSelector:
