@@ -6,8 +6,8 @@ import Leaderboard from './components/Leaderboard'
 import './HomePage.scss'
 
 const HomePage = () => {
-	const [dataLeaderboard, loadingLeaderboard] = useFetch('leaderboard');
-	const [dataQuestion, loadingQuestion] = useFetch('question');
+	const [dataLeaderboard, loadingLeaderboard] = useFetch('http://192.160.0.113:5000/leaderboard');
+	const [dataQuestion, loadingQuestion] = useFetch('http://192.160.0.113:5000/question');
 	// const { num, ans } = dataQuestion
 	// const { data } = dataLeaderboard
 
