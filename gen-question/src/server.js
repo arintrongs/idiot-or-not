@@ -88,11 +88,17 @@ const getAns = (num,op) => {
 }
 
 app.get('/', async(req,res)=>{
+    console.log('request to gen-question')
+    console.log(req.body)
     try{
         const rand = genRand()
+        console.log('res from gen-question')
+        console.log(JSON.stringify(rand))
         res.status(200).send(JSON.stringify(rand))
     }
     catch(error){
+        console.log('res from gen-question')
+        console.log('error')
         res.status(400).send(error);
     }
 })
