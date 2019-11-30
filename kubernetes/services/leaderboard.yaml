@@ -4,7 +4,6 @@ metadata:
     name: leaderboard
     namespace: idiot-or-not
 spec:
-    type: NodePort
     selector:
         app: leaderboard
     ports:

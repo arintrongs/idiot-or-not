@@ -9,6 +9,6 @@ spec:
     - port: 15672
       targetPort: 15672
       protocol: TCP
-      nodePort: 33333
+      nodePort: 31123
   selector:
     app: rabbitmq

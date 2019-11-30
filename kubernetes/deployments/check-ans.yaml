@@ -18,3 +18,7 @@ spec:
         image: eyeayeeye/check-ans
         ports:
         - containerPort: 80
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"

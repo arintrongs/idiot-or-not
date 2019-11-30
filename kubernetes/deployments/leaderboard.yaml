@@ -4,7 +4,7 @@ metadata:
   name: leaderboard
   namespace: idiot-or-not
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: leaderboard
@@ -19,3 +19,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
