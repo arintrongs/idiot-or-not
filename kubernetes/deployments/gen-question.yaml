@@ -4,7 +4,7 @@ metadata:
   name: gen-question
   namespace: idiot-or-not
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: gen-question
@@ -14,7 +14,7 @@ spec:
         app: gen-question
     spec:
       containers:
-      - name: gen-question
-        image: eyeayeeye/gen-question
-        ports:
-        - containerPort: 80
+        - name: gen-question
+          image: eyeayeeye/gen-question
+          ports:
+            - containerPort: 80

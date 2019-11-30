@@ -4,7 +4,7 @@ metadata:
   name: check-ans
   namespace: idiot-or-not
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: check-ans
@@ -14,11 +14,7 @@ spec:
         app: check-ans
     spec:
       containers:
-      - name: check-ans
-        image: eyeayeeye/check-ans
-        ports:
-        - containerPort: 80
-      dnsConfig:
-        options:
-        - name: ndots
-          value: "2"
+        - name: check-ans
+          image: eyeayeeye/check-ans
+          ports:
+            - containerPort: 80

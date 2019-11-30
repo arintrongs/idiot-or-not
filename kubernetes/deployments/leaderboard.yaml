@@ -19,7 +19,3 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-      dnsConfig:
-        options:
-        - name: ndots
-          value: "2"
