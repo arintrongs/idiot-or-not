@@ -9,12 +9,22 @@ class Leaderboard extends React.Component {
     this.state = {
       data: [{uid: 'eqsk134', score: 999999}],
     };
+    
     setInterval(async () => {
       const response = await axios.get('http://192.168.0.113:5000/leaderboard');
       const dataLeaderboard = JSON.parse(response.data || '')
       this.setState({ data: dataLeaderboard.data});
       console.log('after set',dataLeaderboard.data)
-    }, 1000);
+    }, 10000);
+  }
+  async fetch() {
+    const response = await axios.get('http://192.168.0.113:5000/leaderboard');
+    const dataLeaderboard = JSON.parse(response.data || '')
+    this.setState({ data: dataLeaderboard.data});
+  }
+
+  componentWillMount() {
+    this.fetch()
   }
   
   render() {
