@@ -14,7 +14,7 @@ class Leaderboard extends React.Component {
       const dataLeaderboard = JSON.parse(response.data || '')
       this.setState({ data: dataLeaderboard.data});
       console.log('after set',dataLeaderboard.data)
-    }, 10000);
+    }, 1000);
   }
   
   render() {

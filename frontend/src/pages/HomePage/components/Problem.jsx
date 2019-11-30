@@ -22,7 +22,7 @@ class PriceInput extends React.Component {
     this.state = {
       data: this.props.num,
       op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'],
-      user: '',
+      user: 'pong',
       ans: this.props.ans,
     };
   }
