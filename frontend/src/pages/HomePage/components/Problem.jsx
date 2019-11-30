@@ -6,7 +6,7 @@ const { Option } = Select;
 
 
 class PriceInput extends React.Component {
-  
+
   static getDerivedStateFromProps(nextProps) {
     // Should be a controlled component.
     if ('value' in nextProps) {
@@ -20,18 +20,18 @@ class PriceInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data : this.props.num,
-      op : ['+','+','+','+','+','+','+','+','+','+'],
+      data: this.props.num,
+      op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'],
       user: '',
       ans: this.props.ans,
     };
   }
   componentDidUpdate(prevProps) {
     if (prevProps.num !== this.props.num) {
-      this.setState({data : this.props.num});
+      this.setState({ data: this.props.num });
     }
     if (prevProps.ans !== this.props.ans) {
-      this.setState({ans: this.props.ans});
+      this.setState({ ans: this.props.ans });
     }
   }
 
@@ -39,21 +39,21 @@ class PriceInput extends React.Component {
     if (!('value' in this.props)) {
       this.setState({ user: user.target.value });
     }
-    this.triggerChange({ user : user.target.value});
+    this.triggerChange({ user: user.target.value });
   };
 
   handleCurrencyChange2 = (currency2, idx) => {
     var tmp = []
-    for (var i=0; i<this.state.data.length;i+=1){
-      if (idx === i ){
+    for (var i = 0; i < this.state.data.length; i += 1) {
+      if (idx === i) {
         tmp.push(currency2)
       }
-      else{
+      else {
         tmp.push(this.state.op[i])
       }
     }
-    this.setState({ op : tmp });
-    this.triggerChange({ op:tmp });
+    this.setState({ op: tmp });
+    this.triggerChange({ op: tmp });
   };
 
   triggerChange = changedValue => {
@@ -72,36 +72,36 @@ class PriceInput extends React.Component {
     const { data, op, user } = this.state;
     console.log('From Form', this.props.num, this.props.ans);
 
-    return <div style={{display:'flex','flexDirection':'row'}}>
-      {data.map((val,idx)=>{
-      if(idx+1 == data.length) {
-        return null;
-      }
-      return(
-        <div style={{display:'flex',flex:3}}>  
-        <div style={{ width: '40%', display: 'inline-block', textAlign: 'center' }}> {val} </div>
-        
-        <Select
-        value={op[idx]}
-        size={'large'}
-        style={{ width: '60%', display: 'inline-block' }}
-        onChange={(e)=>this.handleCurrencyChange2(e,idx)}
-      >
-        <Option value="+">+</Option>
-        <Option value="-">-</Option>
-        <Option value="*">*</Option>
-        <Option value="/">/</Option>
-        <Option value="^">^</Option>
-      </Select> </div>
-      ) 
-    })}
-    <div style={{display:'flex',flex:1.2, justifyContent: 'center'}}> {data[data.length-1]} </div>
-    <div style={{display:'flex',flex:1,justifyContent: 'center'}}> = </div>
-    <div style={{display:'flex',flex:1,justifyContent: 'center'}}> {this.props.ans} </div>
-    <div style={{display:'flex',flex:3,justifyContent: 'center',marginLeft:'60px'}}>
-        <div style={{ width: '30%', display: 'inline-block'}}>user: </div>
-       <Input style={{ width: '70%'}} value={user} onChange={(e)=>this.handleUser(e)} />
-    </div>
+    return <div style={{ display: 'flex', 'flexDirection': 'row' }}>
+      {data.map((val, idx) => {
+        if (idx + 1 == data.length) {
+          return null;
+        }
+        return (
+          <div style={{ display: 'flex', flex: 3 }}>
+            <div style={{ width: '40%', display: 'inline-block', textAlign: 'center' }}> {val} </div>
+
+            <Select
+              value={op[idx]}
+              size={'large'}
+              style={{ width: '60%', display: 'inline-block' }}
+              onChange={(e) => this.handleCurrencyChange2(e, idx)}
+            >
+              <Option value="+">+</Option>
+              <Option value="-">-</Option>
+              <Option value="*">*</Option>
+              <Option value="/">/</Option>
+              <Option value="^">^</Option>
+            </Select> </div>
+        )
+      })}
+      <div style={{ display: 'flex', flex: 1.2, justifyContent: 'center' }}> {data[data.length - 1]} </div>
+      <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}> = </div>
+      <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}> {this.props.ans} </div>
+      <div style={{ display: 'flex', flex: 3, justifyContent: 'center', marginLeft: '60px' }}>
+        <div style={{ width: '30%', display: 'inline-block' }}>user: </div>
+        <Input style={{ width: '70%' }} value={user} onChange={(e) => this.handleUser(e)} />
+      </div>
     </div>
   }
 }
@@ -112,7 +112,15 @@ class Demo extends React.Component {
     super(props);
     this.state = {
       response: '',
+      time: 20
     };
+  }
+
+  handleTimeOut = () => {
+    setInterval(() => {
+      const newTime = this.state.time - 1;
+      this.setState({})
+    })
   }
 
   handleSubmit = e => {
@@ -127,27 +135,26 @@ class Demo extends React.Component {
         })
         console.log('result', result)
         const res = result.data;
-        if (res.result === true)
-        {
-          this.setState({response: 'success'})
+        if (res.result === true) {
+          this.setState({ response: 'success' })
         } else if (result.result === false) {
-          this.setState({response: 'fail'})
+          this.setState({ response: 'fail' })
         } else {
-          this.setState({response: ''})
+          this.setState({ response: '' })
         }
       }
     });
   };
 
   renderResponse = (res) => {
-    if(!res || res === '') {
+    if (!res || res === '') {
       return ''
-    } else if(res == 'success') {
-      return (<div style={{padding: '40px', fontSize: '48px', color: 'green', paddingBottom: '0px', textAlign: 'center', width: '100%'}}>
-      Correct!, you are not idiot
+    } else if (res == 'success') {
+      return (<div style={{ padding: '40px', fontSize: '48px', color: 'green', paddingBottom: '0px', textAlign: 'center', width: '100%' }}>
+        Correct!, you are not idiot
     </div>)
     }
-    return (<div style={{padding: '40px', fontSize: '48px', color: 'red', paddingBottom: '0px', textAlign: 'center', width: '100%'}}>
+    return (<div style={{ padding: '40px', fontSize: '48px', color: 'red', paddingBottom: '0px', textAlign: 'center', width: '100%' }}>
       Wrong answer, you idiot
     </div>)
   }
@@ -158,12 +165,12 @@ class Demo extends React.Component {
     return (
       <React.Fragment>
         <Form layout="inline" onSubmit={this.handleSubmit}>
-          <Form.Item label="Calculator" style={{width: '80%', fontSize: '20px'}}>
+          <Form.Item label="Calculator" style={{ width: '80%', fontSize: '20px' }}>
             {getFieldDecorator('Calculator', {
-              initialValue: { op: ['+','+','+','+','+','+','+','+','+','+'], user: '' },
+              initialValue: { op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'], user: '' },
             })(<PriceInput num={this.props.num} ans={this.props.ans} />)}
           </Form.Item>
-          <Form.Item style={{width: '100px'}}>
+          <Form.Item style={{ width: '100px' }}>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>

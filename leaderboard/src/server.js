@@ -12,9 +12,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", async (req, res) => {
   try {
+    console.log('req:', new Date())
     const response = fs.readFileSync("leaderboard.json", error => {
       if (error) throw error;
     });
+    console.log('res:', response)
     res.status(200).send(JSON.parse(response));
   } catch (error) {
     res.status(400).send(error);
@@ -35,11 +37,11 @@ const amqp = require("amqplib/callback_api");
 const url = "amqp://guest:guest@rabbitmq:5672";
 
 try {
-  amqp.connect(url, function(error0, connection) {
+  amqp.connect(url, function (error0, connection) {
     if (error0) {
       throw error0;
     }
-    connection.createChannel(function(error1, channel) {
+    connection.createChannel(function (error1, channel) {
       if (error1) {
         throw error1;
       }
@@ -49,8 +51,9 @@ try {
       });
       channel.prefetch(1);
 
-      channel.consume(queue, function(msg) {
+      channel.consume(queue, function (msg) {
         try {
+          console.log('msg from rabbitMQ:', msg.content.toString());
           const result = JSON.parse(msg.content.toString());
           let index = null;
           const leaderboard = require("./leaderboard.json");
@@ -89,12 +92,12 @@ try {
           fs.writeFile("leaderboard.json", json, err => {
             if (err) throw err;
           });
-        } catch (err) {}
+        } catch (err) { }
 
-        setTimeout(function() {
+        setTimeout(function () {
           channel.ack(msg);
         }, 1000);
       });
     });
   });
-} catch (err) {}
+} catch (err) { }
