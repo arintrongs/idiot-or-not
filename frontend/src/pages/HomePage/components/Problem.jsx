@@ -78,11 +78,12 @@ class PriceInput extends React.Component {
           return null;
         }
         return (
-          <div style={{ display: 'flex', flex: 1 }}>
+          <div style={{ display: 'flex', flex: 3 }}>
             <div style={{ width: '40%', display: 'inline-block', textAlign: 'center' }}> {val} </div>
+
             <Select
               value={op[idx]}
-              size={size}
+              size={'large'}
               style={{ width: '60%', display: 'inline-block' }}
               onChange={(e) => this.handleCurrencyChange2(e, idx)}
             >
@@ -94,10 +95,10 @@ class PriceInput extends React.Component {
             </Select> </div>
         )
       })}
-      <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> {data[data.length - 1]} </div>
-      <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> = </div>
-      <div style={{ width: '5%', display: 'inline-block', textAlign: 'center' }}> {this.props.ans} </div>
-      <div style={{ width: '15%', display: 'inline-block', textAlign: 'center' }}>
+      <div style={{ display: 'flex', flex: 1.2, justifyContent: 'center' }}> {data[data.length - 1]} </div>
+      <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}> = </div>
+      <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}> {this.props.ans} </div>
+      <div style={{ display: 'flex', flex: 3, justifyContent: 'center', marginLeft: '60px' }}>
         <div style={{ width: '30%', display: 'inline-block' }}>user: </div>
         <Input style={{ width: '70%' }} value={user} onChange={(e) => this.handleUser(e)} />
       </div>
@@ -132,7 +133,8 @@ class Demo extends React.Component {
           op: values.Calculator.op,
           ans: values.Calculator.ans,
         })
-        const res = JSON.parse(result.data);
+        console.log('result', result)
+        const res = result.data;
         if (res.result === true) {
           this.setState({ response: 'success' })
         } else if (result.result === false) {
