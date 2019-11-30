@@ -58,7 +58,7 @@ app.post("/", async (req, res) => {
     };
     console.log("res from check-ans");
     console.log(payload);
-    await axios.post("http://leaderboard/update", payload);
+    axios.post("http://leaderboard/update", payload);
     return res.status(200).send(payload);
   } catch (error) {
     console.log("res from check-ans");
