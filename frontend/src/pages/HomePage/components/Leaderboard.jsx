@@ -1,20 +1,20 @@
 import React from 'react';
 import { Table, Divider, Tag } from 'antd';
+import axios from 'axios'
 
 class Leaderboard extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.data || [],
+      data: [{uid: 'eqsk134', score: 999999}],
     };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.data !== this.props.data) {
-      console.log('data', this.props.data)
-      this.setState({ data: this.props.data || [] });
-    }
+    setInterval(async () => {
+      const response = await axios.get('http://192.168.0.113:5000/leaderboard');
+      const dataLeaderboard = JSON.parse(response.data || '')
+      this.setState({ data: dataLeaderboard.data});
+      console.log('after set',dataLeaderboard.data)
+    }, 10000);
   }
   
   render() {
