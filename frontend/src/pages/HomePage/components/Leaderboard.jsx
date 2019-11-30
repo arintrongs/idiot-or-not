@@ -9,6 +9,13 @@ class Leaderboard extends React.Component {
       data: this.props.data || [],
     };
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.data !== this.props.data) {
+      console.log('data', this.props.data)
+      this.setState({ data: this.props.data || [] });
+    }
+  }
   
   render() {
 
@@ -29,7 +36,7 @@ class Leaderboard extends React.Component {
     return (
       <div style={{padding: '40px', marginLeft: '60px'}}> 
       <div style={{fontSize: '36px'}}>Leaderboard </div>
-      <Table columns={columns} dataSource={this.props.data} />
+      <Table columns={columns} dataSource={this.state.data} />
       
         {/* {this.props.data.map((val,idx)=>{
       return(

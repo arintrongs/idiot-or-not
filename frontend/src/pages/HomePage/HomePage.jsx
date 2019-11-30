@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFetch } from '../../utils/fetchData';
 import Problem from './components/Problem';
 import Leaderboard from './components/Leaderboard'
@@ -7,6 +7,7 @@ import axios from "axios";
 import './HomePage.scss'
 
 const HomePage = () => {
+	const [leader, setLeader] = useState({data: [{uid: 'eqsk134', score: 999999}]});
 	let [dataLeaderboard, loadingLeaderboard] = useFetch('http://192.168.0.113:5000/leaderboard');
 	const [dataQuestion, loadingQuestion] = useFetch('http://192.168.0.113:5000/question');
 	// const { num, ans } = dataQuestion
@@ -18,15 +19,15 @@ const HomePage = () => {
 
 	setInterval(async () => {
 		const response = await axios.get('http://192.168.0.113:5000/leaderboard');
-		const data = JSON.parse(response.data || '')
-    dataLeaderboard = data.data || []
-		console.log('lead', dataLeaderboard);
+		dataLeaderboard = JSON.parse(response.data || '')
+		setLeader(dataLeaderboard)
+		console.log('after set',leader)
 	}, 10000);
 
 	return (
 		<div>
 			<Problem num={dataQuestion.num || [4, 5, 9, 1]} ans={dataQuestion.ans || 7}/>
-			<Leaderboard data={data}/>
+			<Leaderboard data={leader.data}/>
 		</div>  
 	);
 }
