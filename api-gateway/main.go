@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 )
 
 type Submit struct {
@@ -16,9 +16,12 @@ type Submit struct {
 func leaderboard(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
 
-	resp, err := http.Get(os.Getenv("LEADERBOARD_URL"))
+	resp, err := http.Get("http://leaderboard/")
 
-	js, err := json.Marshal(resp)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	js, err := json.Marshal(string(body))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -31,9 +34,11 @@ func leaderboard(w http.ResponseWriter, req *http.Request) {
 func question(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
 
-	resp, err := http.Get(os.Getenv("QUESTION_URL"))
+	resp, err := http.Get("http://gen-question/")
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	js, err := json.Marshal(string(body))
 
-	js, err := json.Marshal(resp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -56,7 +61,7 @@ func submit(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Post(os.Getenv("SUBMIT_URL"), "application/json", req.Body)
+	http.Post("http://check-ans/", "application/json", req.Body)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(json)
