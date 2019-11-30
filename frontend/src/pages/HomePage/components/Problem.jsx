@@ -22,7 +22,7 @@ class PriceInput extends React.Component {
     this.state = {
       data: this.props.num,
       op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'],
-      user: '',
+      user: 'pong',
       ans: this.props.ans,
     };
   }
@@ -143,13 +143,15 @@ class Demo extends React.Component {
           op: values.Calculator.op,
           ans: values.Calculator.ans,
         })
-        console.log('result', result)
-        const res = result.data;
-        if (res.result === true) {
+        const res = JSON.parse(result.data);
+        console.log('result', result, res, res.result, res.result == false)
+        if (res.result == true) {
           this.setState({ response: 'success' })
-        } else if (result.result === false) {
+        } else if (res.result == false) {
+          console.log('fail')
           this.setState({ response: 'fail' })
         } else {
+          console.log('mai ru')
           this.setState({ response: '' })
         }
       }
