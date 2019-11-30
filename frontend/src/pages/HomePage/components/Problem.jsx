@@ -22,7 +22,7 @@ class PriceInput extends React.Component {
     this.state = {
       data: this.props.num,
       op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'],
-      user: 'pong',
+      user: '',
       ans: this.props.ans,
     };
   }
@@ -101,7 +101,7 @@ class PriceInput extends React.Component {
       <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}> {this.props.ans} </div>
       <div style={{ display: 'flex', flex: 3, justifyContent: 'center', marginLeft: '60px' }}>
         <div style={{ width: '30%', display: 'inline-block' }}>user: </div>
-        <Input style={{ width: '70%' }} value={user === "" ? user : 'pong'} onChange={(e) => this.handleUser(e)} />
+        <Input style={{ width: '70%' }} value={user} onChange={(e) => this.handleUser(e)} />
       </div>
     </div>
   }
