@@ -18,7 +18,8 @@ const HomePage = () => {
 
 	setInterval(async () => {
 		const response = await axios.get('http://192.168.0.113:5000/leaderboard');
-    dataLeaderboard = response.data.data
+		const data = JSON.parse(response.data || '')
+    dataLeaderboard = data.data || []
 		console.log('lead', dataLeaderboard);
 	}, 10000);
 
