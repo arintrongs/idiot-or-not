@@ -112,18 +112,25 @@ class Demo extends React.Component {
     super(props);
     this.state = {
       response: '',
-      time: 20
+      time: 20,
+      interval: setInterval(() => {
+        const newTime = this.state.time - 1;
+        if (newTime === 0) {
+          clearInterval(this.state.interval)
+          const btn = document.getElementById('summitBtn');
+          btn.click();
+        }
+        this.setState({ time: newTime });
+      }, 1000)
     };
   }
 
-  handleTimeOut = () => {
-    setInterval(() => {
-      const newTime = this.state.time - 1;
-      this.setState({})
-    })
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
   }
 
   handleSubmit = e => {
+    clearInterval(this.state.interval)
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
@@ -160,6 +167,7 @@ class Demo extends React.Component {
   }
 
   render() {
+    console.log('time', this.state.time)
     const { getFieldDecorator } = this.props.form;
     console.log('From Problem', this.props.num, this.props.ans);
     return (
@@ -171,11 +179,16 @@ class Demo extends React.Component {
             })(<PriceInput num={this.props.num} ans={this.props.ans} />)}
           </Form.Item>
           <Form.Item style={{ width: '100px' }}>
-            <Button type="primary" htmlType="submit">
+            <Button id='summitBtn' type="primary" htmlType="submit" disabled={this.state.time <= 0}>
               Submit
             </Button>
           </Form.Item>
         </Form>
+        <div className='time-out'>
+          <text className={this.state.time > 5 ? 'green' : 'red'}>
+            {this.state.time}{this.state.time > 5 ? '' : " !!!"}
+          </text>
+        </div>
         {this.renderResponse(this.state.response)}
       </React.Fragment>
     );
