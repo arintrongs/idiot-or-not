@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -9,14 +10,18 @@ import (
 )
 
 type Submit struct {
-	Uid string `json:"uid"`
-	Ans int    `json:"ans"`
+	Uid string   `json:"uid"`
+	Ans int      `json:"ans"`
+	Num []int    `json:"num"`
+	Op  []string `json:"op"`
 }
 
 func leaderboard(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
 
 	resp, err := http.Get("http://leaderboard/")
+
+	fmt.Printf("/leaderboard, Request \n")
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
@@ -27,12 +32,16 @@ func leaderboard(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	fmt.Printf("/leaderboard, Response : %+v\n", string(body))
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
 }
 
 func question(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
+
+	fmt.Printf("/question, Request \n")
 
 	resp, err := http.Get("http://gen-question/")
 	defer resp.Body.Close()
@@ -43,6 +52,8 @@ func question(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	fmt.Printf("/question, Response : %+v\n", string(body))
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
@@ -56,19 +67,36 @@ func submit(w http.ResponseWriter, req *http.Request) {
 	var s Submit
 	decoder.Decode(&s)
 
-	json, err := json.Marshal(s)
+	js, err := json.Marshal(s)
+
+	fmt.Printf("/submit, Request : %+v\n", string(js))
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Post("http://check-ans/", "application/json", req.Body)
+
+	jsonStr := []byte(string(js))
+
+	resp, err := http.Post("http://localhost:8080/", "application/json", bytes.NewBuffer(jsonStr))
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	js, err = json.Marshal(string(body))
+
+	fmt.Printf("/submit, Response : %+v\n", string(body))
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
+	w.Write(js)
 }
 
 func test(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Hii!!!!!!!")
+	fmt.Fprintf(w, "Hii!!!!!!!\n")
 }
 
 func failOnError(err error, msg string) {
