@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  namespace: idiot-or-not
+spec:
+  type: NodePort
+  ports:
+    - port: 15672
+      targetPort: 15672
+      protocol: TCP
+      nodePort: 33333
+  selector:
+    app: rabbitmq
