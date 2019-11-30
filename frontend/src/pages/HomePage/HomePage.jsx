@@ -7,8 +7,8 @@ import axios from "axios";
 import './HomePage.scss'
 
 const HomePage = () => {
-	const [dataLeaderboard, loadingLeaderboard] = useFetch('http://192.168.0.113:5000/leaderboard');
-	let [dataQuestion, loadingQuestion] = useFetch('http://192.168.0.113:5000/question');
+	let [dataLeaderboard, loadingLeaderboard] = useFetch('http://192.168.0.113:5000/leaderboard');
+	const [dataQuestion, loadingQuestion] = useFetch('http://192.168.0.113:5000/question');
 	// const { num, ans } = dataQuestion
 	// const { data } = dataLeaderboard
 	console.log(dataQuestion)
@@ -17,9 +17,9 @@ const HomePage = () => {
 	const data = dataLeaderboard.data || [{uid: 'eqsk134', score: 100}, {uid: 'pong', score: -2100}]
 
 	setInterval(async () => {
-		const response = await axios.get('http://192.168.0.113:5000/question');
-    dataQuestion = response.data.data
-		console.log('ques', dataQuestion);
+		const response = await axios.get('http://192.168.0.113:5000/leaderboard');
+    dataLeaderboard = response.data.data
+		console.log('lead', dataLeaderboard);
 	}, 10000);
 
 	return (
