@@ -23,6 +23,55 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.post("/update", async (req, res) => {
+  try {
+    const result = req.body;
+    let index = null;
+    const leaderboardFile = fs.readFileSync("leaderboard.json", error => {
+      if (error) throw error;
+    });
+    const leaderboard = JSON.parse(leaderboardFile);
+    leaderboard.data.forEach((val, ind) => {
+      if (result.uid === val.uid) {
+        index = ind;
+      }
+    });
+    if (index != null) {
+      const user = leaderboard.data[index];
+      if (result.result) {
+        user.score = user.score + 100;
+      } else {
+        user.score = user.score - 150;
+      }
+      leaderboard.data[index] = user;
+    } else {
+      if (result.result) {
+        leaderboard.data.push({
+          uid: result.uid,
+          score: 100
+        });
+      } else {
+        leaderboard.data.push({
+          uid: result.uid,
+          score: -150
+        });
+      }
+    }
+
+    leaderboard.data = leaderboard.data.sort((a, b) =>
+      a.score > b.score ? -1 : 1
+    );
+
+    const json = JSON.stringify(leaderboard);
+    fs.writeFile("leaderboard.json", json, err => {
+      if (err) throw err;
+    });
+    res.status(200).send(leaderboard);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 const PORT = process.env.PORT || 80;
 
 app.listen(PORT, error => {
@@ -32,72 +81,72 @@ app.listen(PORT, error => {
   }
 });
 
-const amqp = require("amqplib/callback_api");
+// const amqp = require("amqplib/callback_api");
 
-const url = "amqp://guest:guest@rabbitmq:5672";
+// const url = "amqp://guest:guest@rabbitmq:5672";
 
-try {
-  amqp.connect(url, function (error0, connection) {
-    if (error0) {
-      throw error0;
-    }
-    connection.createChannel(function (error1, channel) {
-      if (error1) {
-        throw error1;
-      }
-      var queue = "main";
-      channel.assertQueue(queue, {
-        durable: false
-      });
-      channel.prefetch(1);
+// try {
+//   amqp.connect(url, function (error0, connection) {
+//     if (error0) {
+//       throw error0;
+//     }
+//     connection.createChannel(function (error1, channel) {
+//       if (error1) {
+//         throw error1;
+//       }
+//       var queue = "main";
+//       channel.assertQueue(queue, {
+//         durable: false
+//       });
+//       channel.prefetch(1);
 
-      channel.consume(queue, function (msg) {
-        try {
-          console.log('msg from rabbitMQ:', msg.content.toString());
-          const result = JSON.parse(msg.content.toString());
-          let index = null;
-          const leaderboard = require("./leaderboard.json");
-          leaderboard.data.forEach((val, ind) => {
-            if (result.uid === val.uid) {
-              index = ind;
-            }
-          });
-          if (index != null) {
-            const user = leaderboard.data[index];
-            if (result.result) {
-              user.score = user.score + 100;
-            } else {
-              user.score = user.score - 150;
-            }
-            leaderboard.data[index] = user;
-          } else {
-            if (result.result) {
-              leaderboard.data.push({
-                uid: result.uid,
-                score: 100
-              });
-            } else {
-              leaderboard.data.push({
-                uid: result.uid,
-                score: -150
-              });
-            }
-          }
+//       channel.consume(queue, function (msg) {
+//         try {
+//           console.log('msg from rabbitMQ:', msg.content.toString());
+//           const result = JSON.parse(msg.content.toString());
+//           let index = null;
+//           const leaderboard = require("./leaderboard.json");
+//           leaderboard.data.forEach((val, ind) => {
+//             if (result.uid === val.uid) {
+//               index = ind;
+//             }
+//           });
+//           if (index != null) {
+//             const user = leaderboard.data[index];
+//             if (result.result) {
+//               user.score = user.score + 100;
+//             } else {
+//               user.score = user.score - 150;
+//             }
+//             leaderboard.data[index] = user;
+//           } else {
+//             if (result.result) {
+//               leaderboard.data.push({
+//                 uid: result.uid,
+//                 score: 100
+//               });
+//             } else {
+//               leaderboard.data.push({
+//                 uid: result.uid,
+//                 score: -150
+//               });
+//             }
+//           }
 
-          leaderboard.data = leaderboard.data.sort((a, b) =>
-            a.score > b.score ? -1 : 1
-          );
+//           leaderboard.data = leaderboard.data.sort((a, b) =>
+//             a.score > b.score ? -1 : 1
+//           );
 
-          const json = JSON.stringify(leaderboard);
-          fs.writeFile("leaderboard.json", json, err => {
-            if (err) throw err;
-          });
-        } catch (err) { }
+//           const json = JSON.stringify(leaderboard);
+//           fs.writeFile("leaderboard.json", json, err => {
+//             if (err) throw err;
+//           });
+//         } catch (err) { }
 
-        setTimeout(function () {
-          channel.ack(msg);
-        }, 1000);
-      });
-    });
-  });
-} catch (err) { }
+//         setTimeout(function () {
+//           channel.ack(msg);
+//         }, 1000);
+//       });
+//     });
+//   });
+// } catch (err) { }
