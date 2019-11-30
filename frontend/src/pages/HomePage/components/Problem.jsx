@@ -113,12 +113,14 @@ class Demo extends React.Component {
     this.state = {
       response: '',
       time: 30,
+      isSubmitted: false,
       interval: setInterval(() => {
         const newTime = this.state.time - 1;
         if (newTime === 0) {
           clearInterval(this.state.interval)
           const btn = document.getElementById('summitBtn');
           btn.click();
+          this.setState({ isSubmitted: true });
         }
         this.setState({ time: newTime });
       }, 1000)
@@ -130,6 +132,7 @@ class Demo extends React.Component {
   }
 
   handleSubmit = e => {
+    this.setState({ isSubmitted: true })
     clearInterval(this.state.interval)
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -179,7 +182,7 @@ class Demo extends React.Component {
             })(<PriceInput num={this.props.num} ans={this.props.ans} />)}
           </Form.Item>
           <Form.Item style={{ width: '100px' }}>
-            <Button id='summitBtn' type="primary" htmlType="submit" disabled={this.state.time <= 0}>
+            <Button id='summitBtn' type="primary" htmlType="submit" disabled={this.state.isSubmitted}>
               Submit
             </Button>
           </Form.Item>
