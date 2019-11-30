@@ -112,7 +112,7 @@ class Demo extends React.Component {
     super(props);
     this.state = {
       response: '',
-      time: 20,
+      time: 30,
       interval: setInterval(() => {
         const newTime = this.state.time - 1;
         if (newTime === 0) {
@@ -185,8 +185,8 @@ class Demo extends React.Component {
           </Form.Item>
         </Form>
         <div className='time-out'>
-          <text className={this.state.time > 5 ? 'green' : 'red'}>
-            {this.state.time}{this.state.time > 5 ? '' : " !!!"}
+          <text className={this.state.time > 10 ? 'green' : 'red'}>
+            {this.state.time}{this.state.time > 10 ? '' : " !!!"}
           </text>
         </div>
         {this.renderResponse(this.state.response)}
