@@ -1,7 +1,6 @@
 const Express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const publishMsg = require('./service_check.js')
 const axios = require('axios');
 
 const app = new Express();
@@ -66,7 +65,6 @@ app.post('/', async (req, res) => {
         console.log(payload)
         res.status(200).send(payload)
         await axios.post('http://leaderboard/update',payload)
-
 
     }
     catch (error) {
