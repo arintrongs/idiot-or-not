@@ -70,6 +70,7 @@ class PriceInput extends React.Component {
   render() {
     const { size } = this.props;
     const { data, op, user } = this.state;
+    console.log('heee ', this.state)
     console.log('From Form', this.props.num, this.props.ans);
 
     return <div style={{ display: 'flex', 'flexDirection': 'row' }}>
@@ -100,7 +101,7 @@ class PriceInput extends React.Component {
       <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}> {this.props.ans} </div>
       <div style={{ display: 'flex', flex: 3, justifyContent: 'center', marginLeft: '60px' }}>
         <div style={{ width: '30%', display: 'inline-block' }}>user: </div>
-        <Input style={{ width: '70%' }} value={user} onChange={(e) => this.handleUser(e)} />
+        <Input style={{ width: '70%' }} value={user === "" ? user : 'pong'} onChange={(e) => this.handleUser(e)} />
       </div>
     </div>
   }
@@ -136,10 +137,12 @@ class Demo extends React.Component {
     this.setState({ isSubmitted: true })
     clearInterval(this.state.interval)
     e.preventDefault();
+
     this.props.form.validateFields(async (err, values) => {
+      console.log('uiddddd', values.Calculator.user)
       if (!err) {
         const result = await axios.post('http://192.168.0.113:5000/submit', {
-          uid: values.Calculator.user,
+          uid: values.Calculator.user || "default",
           num: values.Calculator.data,
           op: values.Calculator.op,
           ans: values.Calculator.ans,
@@ -177,29 +180,33 @@ class Demo extends React.Component {
     const { getFieldDecorator } = this.props.form;
     console.log('From Problem', this.props.num, this.props.ans);
     return (
-      this.state.started ? 
-      <React.Fragment>
-        <Form layout="inline" onSubmit={this.handleSubmit}>
-          <Form.Item label="Calculator" style={{ width: '80%', fontSize: '20px' }}>
-            {getFieldDecorator('Calculator', {
-              initialValue: { op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'], user: '' },
-            })(<PriceInput num={this.props.num} ans={this.props.ans} />)}
-          </Form.Item>
-          <Form.Item style={{ width: '100px' }}>
-            <Button id='summitBtn' type="primary" htmlType="submit" disabled={this.state.isSubmitted}>
-              Submit
+      this.state.started ?
+        <React.Fragment>
+          <Form layout="inline" onSubmit={this.handleSubmit}>
+            <Form.Item label="Calculator" style={{ width: '80%', fontSize: '20px' }}>
+              {getFieldDecorator('Calculator', {
+                initialValue: { op: ['+', '+', '+', '+', '+', '+', '+', '+', '+', '+'], user: '' },
+              })(<PriceInput num={this.props.num} ans={this.props.ans} />)}
+            </Form.Item>
+            <Form.Item style={{ width: '100px' }}>
+              <Button id='summitBtn' type="primary" htmlType="submit" disabled={this.state.isSubmitted}>
+                Submit
             </Button>
-          </Form.Item>
-        </Form>
-        <div className='time-out'>
-          <text className={this.state.time > 10 ? 'green' : 'red'}>
-            {this.state.time}{this.state.time > 10 ? '' : " !!!"}
-          </text>
-        </div>
-        {this.renderResponse(this.state.response)}
-      </React.Fragment>
-      :
-      <Button style={{ textAlign: 'center' }} onClick={() => {this.setState({started: true, time: 30})}}> Start! </Button>
+            </Form.Item>
+          </Form>
+          <div className='time-out'>
+            <text className={this.state.time > 10 ? 'green' : 'red'}>
+              {this.state.time}{this.state.time > 10 ? '' : " !!!"}
+            </text>
+          </div>
+          {this.renderResponse(this.state.response)}
+        </React.Fragment>
+        :
+        <div style={{ width: '100%', display: 'flex', justify: 'center' }}> <Button type='success' style={{
+          textAlign: 'center',
+          margin: 'auto'
+        }} onClick={() => { this.setState({ started: true, time: 30 }) }}> Start! </Button></div>
+
     );
   }
 }
