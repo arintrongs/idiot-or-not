@@ -78,7 +78,7 @@ func submit(w http.ResponseWriter, req *http.Request) {
 
 	jsonStr := []byte(string(js))
 
-	resp, err := http.Post("http://localhost:8080/", "application/json", bytes.NewBuffer(jsonStr))
+	resp, err := http.Post("http://check-ans/", "application/json", bytes.NewBuffer(jsonStr))
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 
