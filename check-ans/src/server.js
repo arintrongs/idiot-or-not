@@ -50,6 +50,8 @@ const getAns = (num,op) => {
 
 app.post('/', async (req,res)=>
   {
+    console.log('request to check-ans')
+    console.log(req.body)
         try{
             const ans = getAns(req.body.num,req.body.op)
             let result = false
@@ -61,9 +63,13 @@ app.post('/', async (req,res)=>
                 result
             }
             await publishMsg(JSON.stringify(payload))
+            console.log('res from check-ans')
+            console.log(payload)
             res.status(200).send(payload)
         }
         catch(error){
+            console.log('res from check-ans')
+            console.log('error')
             res.status(400).send(error);
         }
     })
