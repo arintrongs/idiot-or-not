@@ -112,7 +112,8 @@ class Demo extends React.Component {
     super(props);
     this.state = {
       response: '',
-      time: 30,
+      started: false,
+      time: 30000000,
       interval: setInterval(() => {
         const newTime = this.state.time - 1;
         if (newTime === 0) {
@@ -173,6 +174,7 @@ class Demo extends React.Component {
     const { getFieldDecorator } = this.props.form;
     console.log('From Problem', this.props.num, this.props.ans);
     return (
+      this.state.started ? 
       <React.Fragment>
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <Form.Item label="Calculator" style={{ width: '80%', fontSize: '20px' }}>
@@ -193,6 +195,8 @@ class Demo extends React.Component {
         </div>
         {this.renderResponse(this.state.response)}
       </React.Fragment>
+      :
+      <Button style={{ textAlign: 'center' }} onClick={() => {this.setState({started: true, time: 30})}}> Start! </Button>
     );
   }
 }
