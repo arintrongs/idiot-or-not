@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: foofoo
-          image: alxegore/foofoo
+          image: enigmaxz/frontend
           imagePullPolicy: Always
           ports:
             - containerPort: 5000

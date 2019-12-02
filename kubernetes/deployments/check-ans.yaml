@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: check-ans
-          image: eyeayeeye/check-ans
+          image: enigmaxz/check-ans
           ports:
             - containerPort: 80
