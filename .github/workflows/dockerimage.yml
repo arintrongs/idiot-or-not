@@ -10,22 +10,18 @@ jobs:
   buildx:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
-      -
-        name: Available platforms
+      - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Run Buildx
+      - name: Run Buildx - frontend
         run: |
           docker buildx build \
             --platform linux/arm/v6,linux/arm/v7,linux/arm64 \
-            --output "type=image,push=false" \
-            --file ./test/Dockerfile ./test
+            --push \
+            --file ./frontend/Dockerfile ./frontend
