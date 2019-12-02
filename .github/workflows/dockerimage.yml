@@ -28,3 +28,31 @@ jobs:
             -t enigmaxz/frontend \
             --push \
             --file ./frontend/Dockerfile ./frontend
+      - name: Run Buildx - api-gateway
+        run: |
+          docker buildx build \
+            --platform linux/arm/v6,linux/arm/v7,linux/arm64 \
+            -t enigmaxz/api-gateway \
+            --push \
+            --file ./api-gateway/Dockerfile ./api-gateway
+      - name: Run Buildx - check-ans
+        run: |
+          docker buildx build \
+            --platform linux/arm/v6,linux/arm/v7,linux/arm64 \
+            -t enigmaxz/check-ans \
+            --push \
+            --file ./check-ans/Dockerfile ./check-ans
+      - name: Run Buildx - gen-question
+        run: |
+          docker buildx build \
+            --platform linux/arm/v6,linux/arm/v7,linux/arm64 \
+            -t enigmaxz/gen-question \
+            --push \
+            --file ./gen-question/Dockerfile ./gen-question
+      - name: Run Buildx - leaderboard
+        run: |
+          docker buildx build \
+            --platform linux/arm/v6,linux/arm/v7,linux/arm64 \
+            -t enigmaxz/leaderboard \
+            --push \
+            --file ./leaderboard/Dockerfile ./leaderboard
