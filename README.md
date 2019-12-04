@@ -1,7 +1,7 @@
 # SDS Project - Idiot or Not
 
 ## Architecture
-
+This project is automatically built and uploaded to the **docker hub** using **github actions**.
 
 ## Preparation
 To setup the cluster we need **one load balancer node**, **two master node** and **four Raspberry Pi worker node** which have the following hostname, OS and and IP Address.
@@ -113,7 +113,7 @@ scp ca.pem kubernetes.pem kubernetes-key.pem master01@192.168.0.107:~
 scp ca.pem kubernetes.pem kubernetes-key.pem master02@192.168.0.108:~
 ```
 ## Configure the HAProxy
-1. Copy the follwing config to `sudo systemctl start etcd`
+1. Add The following code to `etc/haproxy/haproxy.cfg`
 
 ```
 
@@ -242,6 +242,27 @@ sha256:95cbb9ee5536aa61ec0239d6edd8598af68758308d0a0425848ae1af28859bea \
 kubeadm join --token 9e700f.7dc97f5e3a45c9e5 \
 192.168.0.113:6443 --discovery-token-ca-cert-hash \
 sha256:95cbb9ee5536aa61ec0239d6edd8598af68758308d0a0425848ae1af28859bea 
+```
+
+## Install the Weave Net network driver.
+1. Run the following command to install the Weave Net network drive in `master01`.
+```
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+```
+
+## Fix CoreDNS keep `CrashLoopBackOff`
+1. kubectl edit cm coredns -n kube-system
+2. delete ‘loop’ ,save and exit
+3. restart coredns pods by：kubectl delete pod coredns.... -n kube-system
+
+## Deploy the application
+Clone the repository and run
+```
+./start.sh
+```
+or
+```
+wget --no-check-certificate https://raw.githubusercontent.com/arintrongs/idiot-or-not/master/start.sh | sh
 ```
 
 
